@@ -2,7 +2,7 @@
 "use client";
 
 /*============ IMPORT OF HOOKS, NEXT IMAGE, ZUSTAND STORE, CN, LODASH DEBOUNCE ============*/
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
 import { cn } from "@/lib/utils";
@@ -221,13 +221,15 @@ export default function Movies() {
   - I applied a debounce of 1000ms to the loadMore button to prevent the user to spam and making too much
   - API calls. Since the debounce is like creating a Timeout, it's important to delete it, with the useEffect!
   */
-  const debouncedLoadMore = debounce(loadMore, 1000);
+  const debouncedLoadMore = useMemo(() => debounce(loadMore, 1000), [loadMore]);
 
+  // Create a debounced version of loadMore that only fires after 1000ms of inactivity.
+  // THE USEMEMO ensures the debounced function is NOT recreated on every render.
   useEffect(() => {
     return () => {
       debouncedLoadMore.cancel();
     };
-  }, []);
+  }, [debouncedLoadMore]);
 
   return (
     <section className="relative py-20 overflow-clip">
@@ -268,7 +270,7 @@ export default function Movies() {
       {/*======== MOVIE NOT FOUND ========*/}
       {!loading && movies.length === 0 && (
         <p className="text-center text-gray-400 mt-6" aria-live="polite">
-          No movies found for "{userQuery}".
+          {`No movies found for ${userQuery}.`}
         </p>
       )}
 

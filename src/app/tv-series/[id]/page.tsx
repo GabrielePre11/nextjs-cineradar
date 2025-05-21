@@ -96,7 +96,7 @@ NEXT JS 15 error: A param property was accessed directly with params.id. params 
 
 - Solved with this: https://stackoverflow.com/questions/79465960/react-a-param-property-was-accessed-directly-with-params
 */
-export default function tvSeriesPage({
+export default function TvSeriesPage({
   params,
 }: {
   params: Promise<{ id: string }>;

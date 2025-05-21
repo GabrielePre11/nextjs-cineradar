@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 /*============ CountryFlagProps INTERFACE ============*/
 interface CountryFlagProps {
   // iso: is the ISO 3166-1 alpha-2 code of a country (ex. "US", "IT", "FR").
