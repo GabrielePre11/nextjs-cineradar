@@ -2,7 +2,7 @@
 "use client";
 
 /*============ IMPORT OF HOOKS, NEXT IMAGE, ZUSTAND STORE, CN, LODASH DEBOUNCE, NEXT LINK ============*/
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import Image from "next/image";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
 import { cn } from "@/lib/utils";
@@ -208,22 +208,16 @@ export default function TVSeries() {
     fetchTVSeries();
   }, [pageNum, userQuery]);
 
-  const loadMore = (): void => {
-    // When the function is called by clicking the Load More button, the number of the page increments, charging the new tv series!
-    setPageNum((prev) => prev + 1);
-  };
+  /*============ LOAD MORE BUTTON ============*/
+  // The useCallback presents the recreation of the function on every render
+  const loadMore = useCallback(() => {
+    setPageNum((prev) => prev + 1); // Increase the page number to load more items
+  }, []);
 
-  /*============ DECLARING THE DEBOUNCE FOR LOAD MORE ============*/
-
-  /*
-    - I applied a debounce of 1000ms to the loadMore button to prevent the user to spam and making too much
-    - API calls. Since the debounce is like creating a Timeout, it's important to delete it, with the useEffect!
-    */
-
+  // Debounce the loadMore function to avoid spamming the fetch
   const debouncedLoadMore = useMemo(() => debounce(loadMore, 1000), [loadMore]);
 
-  // Create a debounced version of loadMore that only fires after 1000ms of inactivity.
-  // THE USEMEMO ensures the debounced function is NOT recreated on every render.
+  // And then cancel debounce on component unmount to avoid memory leaks
   useEffect(() => {
     return () => {
       debouncedLoadMore.cancel();
