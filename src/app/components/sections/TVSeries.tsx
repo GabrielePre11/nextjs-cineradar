@@ -228,7 +228,7 @@ export default function TVSeries() {
     <section className="relative py-20 overflow-clip">
       <figure className="relative h-[300px] sm:h-[400px] lg:h-[480px] rounded-lg">
         <Image
-          src="/TVSeriesBanner.jpg"
+          src="/banner-tv-v2.jpg"
           alt="TV Series Banner"
           className="object-cover object-right rounded-lg"
           fill
